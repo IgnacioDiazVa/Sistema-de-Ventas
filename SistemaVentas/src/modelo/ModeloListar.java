@@ -36,7 +36,7 @@ public class ModeloListar {
             while (resultSet.next()){
                 venta = new Venta();
                 venta.setIdVenta(resultSet.getInt("ID_VENTA"));
-//                venta.setFechaContratacion(resultSet.getString("FECHA_CONTRATACION"));
+                venta.setFechaContratacion(resultSet.getString("FECHA_CONTRATACION"));
                 venta.setFechaTerminoOpcional(resultSet.getString("FECHA_TERMINO_OPCIONAL"));
                 venta.setFechaTerminoContrato(resultSet.getString("FECHA_TERMINO_CONTRATO"));
                 venta.setTipoVentaId(resultSet.getInt("TIPOVENTA_ID_TIPO"));
