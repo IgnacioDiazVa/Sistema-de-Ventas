@@ -1,29 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package modelo;
 
 /**
  *
- * @author simon
+ * @author simon (editado por Lucas)
  */
 public class Venta {
     private Integer idVenta,tipoVentaId,valorVenta;
-    private String rut, fehcaContratacion, fechaTerminoOpcional, fechaTerminoContrato;
+    private String rut, fechaContratacion, fechaTerminoOpcional, fechaTerminoContrato;
 
     public Venta() {
     }
 
-    public Venta(Integer idVenta, Integer tipoVentaId, Integer valorVenta, String rut, String fehcaContratacion, String fechaTerminoOpcional, String fechaTerminoContrato) {
-        this.idVenta = idVenta;
-        this.tipoVentaId = tipoVentaId;
-        this.valorVenta = valorVenta;
-        this.rut = rut;
-        this.fehcaContratacion = fehcaContratacion;
-        this.fechaTerminoOpcional = fechaTerminoOpcional;
-        this.fechaTerminoContrato = fechaTerminoContrato;
+    public Venta(Integer idVenta, Integer tipoVentaId, Integer valorVenta, String rut, String fechaContratacion, String fechaTerminoOpcional, String fechaTerminoContrato) {
+        this.idVenta = idVenta;//hasta 4 digitos
+        this.tipoVentaId = tipoVentaId;//post-pago (1000) o pre-pago (2000)
+        this.valorVenta = valorVenta;//hasta 11 digitos
+        this.rut = rut;//hasta 11 digitos
+        this.fechaContratacion = fechaContratacion;//insertar como TimeStamp
+        this.fechaTerminoOpcional = fechaTerminoOpcional;//insertar como TimeStamp
+        this.fechaTerminoContrato = fechaTerminoContrato;//insertar como TimeStamp
     }
 
     public Integer getIdVenta() {
@@ -31,7 +26,11 @@ public class Venta {
     }
 
     public void setIdVenta(Integer idVenta) {
-        this.idVenta = idVenta;
+        if(idVenta>0 && idVenta<10000){
+            this.idVenta = idVenta;
+        }else{
+            System.out.println("Id debe ser entre 0 y 9999");
+        }
     }
 
     public Integer getTipoVentaId() {
@@ -39,7 +38,11 @@ public class Venta {
     }
 
     public void setTipoVentaId(Integer tipoVentaId) {
-        this.tipoVentaId = tipoVentaId;
+        if(tipoVentaId==1000 || tipoVentaId==2000){
+            this.tipoVentaId = tipoVentaId;
+        }else{
+            System.out.println("Tipo venta desconocido");
+        }
     }
 
     public Integer getValorVenta() {
@@ -58,12 +61,12 @@ public class Venta {
         this.rut = rut;
     }
 
-    public String getFehcaContratacion() {
-        return fehcaContratacion;
+    public String getFechaContratacion() {
+        return fechaContratacion;
     }
 
-    public void setFehcaContratacion(String fehcaContratacion) {
-        this.fehcaContratacion = fehcaContratacion;
+    public void setFechaContratacion(String fechaContratacion) {
+        this.fechaContratacion = fechaContratacion;
     }
 
     public String getFechaTerminoOpcional() {
