@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author simon
  */
-public class ModeloListar {
+public class Listar {
     ArrayList<Venta> ventas;
     Venta venta;
     ArrayList<DetalleVenta> detalles;
@@ -36,7 +36,7 @@ public class ModeloListar {
             while (resultSet.next()){
                 venta = new Venta();
                 venta.setIdVenta(resultSet.getInt("ID_VENTA"));
-//                venta.setFechaContratacion(resultSet.getString("FECHA_CONTRATACION"));
+                venta.setFechaContratacion(resultSet.getString("FECHA_CONTRATACION"));
                 venta.setFechaTerminoOpcional(resultSet.getString("FECHA_TERMINO_OPCIONAL"));
                 venta.setFechaTerminoContrato(resultSet.getString("FECHA_TERMINO_CONTRATO"));
                 venta.setTipoVentaId(resultSet.getInt("TIPOVENTA_ID_TIPO"));
@@ -48,7 +48,7 @@ public class ModeloListar {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             System.out.println("se cae en el modelo");                    
-            Logger.getLogger(ModeloListar.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Listar.class.getName()).log(Level.SEVERE, null, ex);
                 return null;
         }   
     }
@@ -71,7 +71,7 @@ public class ModeloListar {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             System.out.println("se cae en el modelo");                    
-            Logger.getLogger(ModeloListar.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Listar.class.getName()).log(Level.SEVERE, null, ex);
                 return null;
         }   
     }

@@ -7,7 +7,7 @@ package controlador;
 
 import java.util.ArrayList;
 import modelo.DetalleVenta;
-import modelo.ModeloListar;
+import modelo.Listar;
 import modelo.Venta;
 
 /**
@@ -15,17 +15,17 @@ import modelo.Venta;
  * @author LEARNING CENTER
  */
 public class Registro {
-    ModeloListar consultaListar;
+    Listar consultaListar;
     /**
      * Metodos a traves del registro para listar, no existen reglas de negocio al respecto
      * @ Simon
      */
     public ArrayList<Venta> ListaVenta(){
-        consultaListar=new ModeloListar();
+        consultaListar=new Listar();
         return consultaListar.ListarVentas();
     }
     public ArrayList<DetalleVenta> ListaDetalle(){
-        consultaListar=new ModeloListar();
+        consultaListar=new Listar();
         return consultaListar.ListarDetalleVenta();
     }
 }

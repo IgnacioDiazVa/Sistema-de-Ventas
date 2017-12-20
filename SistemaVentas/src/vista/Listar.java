@@ -5,19 +5,41 @@
  */
 package vista;
 
+import controlador.Registro;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.DetalleVenta;
+import modelo.Venta;
+
 /**
  *
  * @author LEARNING CENTER
  */
 public class Listar extends javax.swing.JFrame {
+    DefaultTableModel table1;
+    Registro consulta;
+    ArrayList<Venta> ventas;
 
     /**
      * Creates new form Listar
      */
     public Listar() {
         initComponents();
+        table1 = new DefaultTableModel();
+        table1.addColumn("Id Venta");
+        table1.addColumn("Fecha Contratacion");
+        table1.addColumn("Fecha Termino Opcional");
+        table1.addColumn("Fecha Termino Contrato");
+        table1.addColumn("Id Tipo Venta");
+        table1.addColumn("Valor Venta");
+        table1.addColumn("RUT");
+        jTable1.setModel(table1);
+        consulta= new Registro();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,21 +49,119 @@ public class Listar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        botonActualizar = new javax.swing.JButton();
+        botonVolver = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Listar");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        botonActualizar.setText("Actualizar");
+        botonActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonActualizarActionPerformed(evt);
+            }
+        });
+
+        botonVolver.setText("Volver");
+        botonVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonVolverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(247, 247, 247)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(66, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(101, 101, 101)
+                .addComponent(botonActualizar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(botonVolver)
+                .addGap(102, 102, 102))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonActualizar)
+                    .addComponent(botonVolver))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void botonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVolverActionPerformed
+        JFrame volver = new Menu();
+        volver.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_botonVolverActionPerformed
+
+    private void botonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizarActionPerformed
+        String tipoVenta;
+        while(table1.getRowCount()>0) table1.removeRow(0);
+        ventas = consulta.ListaVenta(); 
+        Object[] fila = new Object[7];
+        for (int x=0;x<ventas.size();x++){
+            //Muestra la id de la venta
+            fila[0]=ventas.get(x).getIdVenta();
+            //Da formato a la fecha de contrato
+            Timestamp fecha= Timestamp.valueOf(ventas.get(x).getFechaContratacion());
+            fila[1]=new SimpleDateFormat("dd/MM/yyyy").format(fecha);
+            //Da formato a la fecha de contrato
+            fecha= Timestamp.valueOf(ventas.get(x).getFechaTerminoOpcional());
+            fila[2]=new SimpleDateFormat("dd/MM/yyyy").format(fecha);
+            //Da formato a la fecha de contrato
+            fecha= Timestamp.valueOf(ventas.get(x).getFechaTerminoContrato());
+            fila[3]=new SimpleDateFormat("dd/MM/yyyy").format(fecha);
+            //Muestra si la venta es por post-pago o pre-pago y no el codigo del tipo de venta
+            if (ventas.get(x).getTipoVentaId()==1000){
+                tipoVenta="Post-pago";
+            }else{
+                tipoVenta="Pre-pago";
+            }
+            fila[4]=tipoVenta;
+            //Valor venta con signo $
+            fila[5]="$"+ventas.get(x).getValorVenta();
+            //Rut sin punto y con guion
+            fila[6]=ventas.get(x).getRut();
+            table1.addRow(fila);
+        }jTable1.updateUI();
+        JOptionPane.showMessageDialog(this, "Lista actualizada");
+    }//GEN-LAST:event_botonActualizarActionPerformed
+    //select ID_VENTA,FECHA_CONTRATACION,FECHA_TERMINO_OPCIONAL,FECHA_TERMINO_CONTRATO,TIPOVENTA_ID_TIPO,VALOR_VENTA,RUT 
 
     /**
      * @param args the command line arguments
@@ -79,5 +199,10 @@ public class Listar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonActualizar;
+    private javax.swing.JButton botonVolver;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
