@@ -12,13 +12,13 @@ public class Venta {
     }
 
     public Venta(Integer idVenta, Integer tipoVentaId, Integer valorVenta, String rut, String fechaContratacion, String fechaTerminoOpcional, String fechaTerminoContrato) {
-        this.idVenta = idVenta;//hasta 4 digitos
-        this.tipoVentaId = tipoVentaId;//post-pago (1000) o pre-pago (2000)
-        this.valorVenta = valorVenta;//hasta 11 digitos
-        this.rut = rut;//hasta 11 digitos
-        this.fechaContratacion = fechaContratacion;//insertar como TimeStamp
-        this.fechaTerminoOpcional = fechaTerminoOpcional;//insertar como TimeStamp
-        this.fechaTerminoContrato = fechaTerminoContrato;//insertar como TimeStamp
+        setIdVenta(idVenta);//hasta 4 digitos
+        setTipoVentaId(tipoVentaId);//post-pago (1000) o pre-pago (2000)
+        setValorVenta(valorVenta);//hasta 11 digitos
+        setRut(rut);//hasta 11 digitos
+        setFechaContratacion(fechaContratacion);//insertar como TimeStamp
+        setFechaTerminoOpcional(fechaTerminoOpcional);//insertar como TimeStamp
+        setFechaTerminoContrato(fechaTerminoContrato);//insertar como TimeStamp
     }
     
     public Integer getIdVenta() {
@@ -58,7 +58,11 @@ public class Venta {
     }
 
     public void setRut(String rut) {
-        this.rut = rut;
+        if(rut.length()<11){
+            this.rut = rut;
+        }else{
+            System.out.println("rut debe tener maximo 11 caracteres");
+        }
     }
 
     public String getFechaContratacion() {
@@ -84,25 +88,9 @@ public class Venta {
     public void setFechaTerminoContrato(String fechaTerminoContrato) {
         this.fechaTerminoContrato = fechaTerminoContrato;
     }
-    
-    public static boolean validarRut(String rut) {
-        boolean validacion = false;
-        try {
-            rut =  rut.toUpperCase();
-            rut = rut.replace(".", "");
-            rut = rut.replace("-", "");
-            int rutAux = Integer.parseInt(rut.substring(0, rut.length() - 1));
-            char dv = rut.charAt(rut.length() - 1);
-            int m = 0, s = 1;
-            for (; rutAux != 0; rutAux /= 10) {
-                s = (s + rutAux % 10 * (9 - m++ % 6)) % 11;
-            }    
-            if (dv == (char) (s != 0 ? s + 47 : 75)) {
-                validacion = true;
-            }
-        } catch (java.lang.NumberFormatException e) {
-        } catch (Exception e) {
-        }
-        return validacion;
+
+    @Override
+    public String toString() {
+        return "\nID: " + getIdVenta() + " Tipo Venta: " + getTipoVentaId() + " Valor: " + getValorVenta() + " Rut: " + getRut() + " Fecha Contratacion: " + getFechaContratacion() + " Fecha Termino Opcional: " + getFechaTerminoOpcional() + " Fecha Termino Contrato: " + getFechaTerminoContrato();
     }
 }
