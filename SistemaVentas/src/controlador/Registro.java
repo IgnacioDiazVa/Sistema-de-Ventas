@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import modelo.DetalleVenta;
 import modelo.Listar;
+import modelo.Modificar;
 import modelo.Venta;
 
 /**
@@ -20,6 +21,7 @@ import modelo.Venta;
  */
 public class Registro {
     Listar consultaListar;
+    Modificar consultaModificar;
     /**
      * Metodos a traves del registro para listar, no existen reglas de negocio al respecto
      * @ Simon
@@ -36,7 +38,10 @@ public class Registro {
         consultaListar=new Listar();
         return consultaListar.BuscarDetalleVenta(codigo, producto);
     }
-    
+    public Boolean ModificarDetalle(int codigo, int producto,int cantidad, int precio){
+        consultaModificar = new Modificar();
+        return consultaModificar.ModificarDetalle(codigo, producto, precio, cantidad);
+    }
     public ResultSet productos(){
         String sentencia = "SELECT NOMBRE_PRODUCTO FROM PRODUCTO ORDER BY ID ASC";//String de la sentencia para buscar los productos agregados
         Statement s;//se crea el statment de la conexion
