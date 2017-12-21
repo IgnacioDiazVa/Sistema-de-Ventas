@@ -48,4 +48,47 @@ public class Registro {
             return null;//retorna nulo si hubo un fallo en la carga de datos
         } 
     }
+    
+    public boolean agregar(Venta nuevo){
+        
+        try {
+            Statement s = acceso.obtenerInstancia().createStatement();//se crea el statment de la conexion
+            if(!buscar(nuevo.getIdVenta())){//se usa el metodo buscar para comprobar si elcodigo ya esta registrado
+                String sentencia = "INSERT INTO VENTA (ID_VENTA, TIPOVENTA_ID_TIPO, VALOR_VENTA, RUT, FECHA_CONTRATACION, FECHA_TERMINO_OPCIONAL, FECHA_TERMINO_CONTRATO)"+//se da la estructura de la tabla
+                                   "VALUES ("+nuevo.getIdVenta()+","+nuevo.getTipoVentaId()+","+nuevo.getValorVenta()+",'"+nuevo.getRut()+"','"+nuevo.getFechaContratacion()+"','"+nuevo.getFechaTerminoOpcional()+"','"+nuevo.getFechaTerminoContrato()+"')";//se agregan los datos del producto
+
+                s.execute(sentencia);//se ejecuta la sentencia sql
+
+                System.out.println("Insertado con exito");//mensaje de exito
+                return true;//retorno de exito
+            }else{
+                System.out.println("Codigo repetido");//mensaje de error si codigo repetido
+            }
+        } catch (SQLException ex) {
+            System.out.println("No se pudo agregar");//mensaje de error al agregar
+        }
+        return false;//retorno en caso de error
+    }
+    
+    public boolean buscar(int idVenta){
+        String sentencia = "SELECT * FROM VENTA WHERE ID_VENTA = "+idVenta;//String de la sentencia para buscar el producto
+        Statement s;//se crea el statment de la conexion
+        
+        try {
+            s = acceso.obtenerInstancia().createStatement();//se instancia el statment de la conexion
+            System.out.println(" Cargando datos...");
+            ResultSet resultado=s.executeQuery(sentencia);//se captura el resultado de la consulta
+            if(resultado.next()){//se comprueba que no esté vacio
+                System.out.println("encontrado");//mensaje de encontrado
+                return true;//retorno de encontrado
+            }else{
+                System.out.println("no encontrado");//mensaje de no encontrado
+                return false;//retorno de no encontrado
+            }
+        } 
+        catch (SQLException ex) {
+            System.out.println("Error en la carga de datos");//mensaje de error en la consulta
+            return false;//retorno de error en la consulta
+        }
+    }
 }
