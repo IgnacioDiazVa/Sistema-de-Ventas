@@ -54,8 +54,14 @@ public class Registro {
         try {
             Statement s = acceso.obtenerInstancia().createStatement();//se crea el statment de la conexion
             if(!buscar(nuevo.getIdVenta())){//se usa el metodo buscar para comprobar si elcodigo ya esta registrado
-                String sentencia = "INSERT INTO VENTA (ID_VENTA, TIPOVENTA_ID_TIPO, VALOR_VENTA, RUT, FECHA_CONTRATACION, FECHA_TERMINO_OPCIONAL, FECHA_TERMINO_CONTRATO)"+//se da la estructura de la tabla
+                String sentencia;
+                if(nuevo.getFechaTerminoContrato().length()>2){
+                    sentencia = "INSERT INTO VENTA (ID_VENTA, TIPOVENTA_ID_TIPO, VALOR_VENTA, RUT, FECHA_CONTRATACION, FECHA_TERMINO_OPCIONAL, FECHA_TERMINO_CONTRATO)"+//se da la estructura de la tabla
                                    "VALUES ("+nuevo.getIdVenta()+","+nuevo.getTipoVentaId()+","+nuevo.getValorVenta()+",'"+nuevo.getRut()+"','"+nuevo.getFechaContratacion()+"','"+nuevo.getFechaTerminoOpcional()+"','"+nuevo.getFechaTerminoContrato()+"')";//se agregan los datos del producto
+                }else{
+                    sentencia = "INSERT INTO VENTA (ID_VENTA, TIPOVENTA_ID_TIPO, VALOR_VENTA, RUT, FECHA_CONTRATACION, FECHA_TERMINO_OPCIONAL, FECHA_TERMINO_CONTRATO)"+//se da la estructura de la tabla
+                                   "VALUES ("+nuevo.getIdVenta()+","+nuevo.getTipoVentaId()+","+0+",'"+nuevo.getRut()+"','"+nuevo.getFechaContratacion()+"','"+"null"+"','"+"null"+"')";//se agregan los datos del producto
+                }
 
                 s.execute(sentencia);//se ejecuta la sentencia sql
 

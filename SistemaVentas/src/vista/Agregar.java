@@ -279,9 +279,13 @@ public class Agregar extends javax.swing.JFrame {
 
     private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
         // TODO add your handling code here:
+        
         String rut = txtrut.getText();
         Integer codigoVenta = Integer.parseInt(txtcodigo.getText());
-        Integer valorVenta = Integer.parseInt(txtvalorventa.getText());
+        Integer valorVenta = 0;
+        if(txtvalorventa.getText().length()>0){
+            valorVenta = Integer.parseInt(txtvalorventa.getText());
+        }
         Integer tipoVenta = 0;
         
         if(cbxtipoventa.getSelectedIndex()== 0){
@@ -290,7 +294,7 @@ public class Agregar extends javax.swing.JFrame {
         if(cbxtipoventa.getSelectedIndex()== 1){
             tipoVenta = 1000;
         }
-        SimpleDateFormat auxiliar = new SimpleDateFormat("dd/mm/yyyy"); 
+        SimpleDateFormat auxiliar = new SimpleDateFormat("dd/MM/yyyy"); 
         
         String fechaContratacion = auxiliar.format(jclfechacontratacion.getDate());
         String fechaTerminoContrato = auxiliar.format(jclterminocontrato.getDate());
