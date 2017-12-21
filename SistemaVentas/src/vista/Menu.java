@@ -92,7 +92,6 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         Listar listar = new Listar();
         listar.setVisible(true);
-        this.dispose();
         dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
