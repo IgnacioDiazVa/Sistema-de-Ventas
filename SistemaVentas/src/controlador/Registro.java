@@ -52,4 +52,46 @@ public class Registro {
             return null;//retorna nulo si hubo un fallo en la carga de datos
         } 
     }
+    
+    /**
+     * Metodo boolean borrar venta por codigo, genera mensajes de avance durante el proceso
+     * @param codigo
+     * @return true si fue borrado de manera correcta a la base de datos
+     */
+    public boolean borrar(int idVenta){
+        if(buscar(idVenta)){//se usa el metodo buscar para comprobar si elcodigo ya esta registrado
+            String sentencia="DELETE FROM VENTA WHERE ID_VENTA="+idVenta;//String de la sentencia para borrar el producto con el codigo
+            try {
+                Statement s = acceso.obtenerInstancia().createStatement();//se crea el statment de la conexion
+                s.executeUpdate(sentencia);//se ejecuta la sentencia sql
+                System.out.println(" registro borrado...");//mensaje de exito
+                return true;//retorno de exito al borrar
+            } catch (SQLException ex) {
+                System.out.println("registro no encontrado");//mensaje de error
+            }
+            return false;//retorno de error al borrar
+        }
+        return false;//retorno de no se encuentra en la base de datos
+    }
+    
+    /**
+     * Metodo boolean borrar detalle venta por codigo, genera mensajes de avance durante el proceso
+     * @param codigo
+     * @return true si fue borrado de manera correcta a la base de datos
+     */
+    public boolean borrarDetalle(int idVenta, int idProducto){
+        if(!BuscarDetalle(idVenta, idProducto).isEmpty()){//se usa el metodo buscar para comprobar si elcodigo ya esta registrado
+            String sentencia="DELETE FROM RELATION_2V1 WHERE VENTA_ID_VENTA="+idVenta+"AND PRODUCTO_ID_PRODUCTO = "+idProducto;//String de la sentencia para borrar el producto con el codigo
+            try {
+                Statement s = acceso.obtenerInstancia().createStatement();//se crea el statment de la conexion
+                s.executeUpdate(sentencia);//se ejecuta la sentencia sql
+                System.out.println(" registro borrado...");//mensaje de exito
+                return true;//retorno de exito al borrar
+            } catch (SQLException ex) {
+                System.out.println("registro no encontrado");//mensaje de error
+            }
+            return false;//retorno de error al borrar
+        }
+        return false;//retorno de no se encuentra en la base de datos
+    }
 }
