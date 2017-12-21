@@ -5,6 +5,10 @@
  */
 package controlador;
 
+import accesoBD.acceso;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import modelo.DetalleVenta;
 import modelo.Listar;
@@ -27,5 +31,21 @@ public class Registro {
     public ArrayList<DetalleVenta> ListaDetalle(){
         consultaListar=new Listar();
         return consultaListar.ListarDetalleVenta();
+    }
+    
+    public ResultSet productos(){
+        String sentencia = "SELECT NOMBRE_PRODUCTO FROM PRODUCTO ORDER BY ID ASC";//String de la sentencia para buscar los productos agregados
+        Statement s;//se crea el statment de la conexion
+        
+        try {
+            s = acceso.obtenerInstancia().createStatement();//se instancia el statment de la conexion
+            System.out.println(" Cargando datos...");
+            ResultSet resultado=s.executeQuery(sentencia);//se ejecuta la sentencia sql y se le da valor al resulltado
+            return resultado;//se retorna el resulatdo de la consulta como ResultSet
+        } 
+        catch (SQLException ex) {
+            System.out.println("Error en la carga de datos");//mensaje de error
+            return null;//retorna nulo si hubo un fallo en la carga de datos
+        } 
     }
 }
