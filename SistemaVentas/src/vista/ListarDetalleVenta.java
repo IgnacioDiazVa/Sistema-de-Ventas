@@ -6,9 +6,12 @@
 package vista;
 
 import controlador.Registro;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.DetalleVenta;
@@ -34,6 +37,24 @@ public class ListarDetalleVenta extends javax.swing.JFrame {
         table1.addColumn("Precio total");
         jTable1.setModel(table1);
         consulta= new Registro();
+        varCodigo.addKeyListener(new KeyAdapter()
+                                        {
+                                           @Override
+                                           public void keyTyped(KeyEvent e)
+                                           {
+                                              char caracter = e.getKeyChar();
+
+                                              // Verificar si la tecla pulsada no es un digito
+                                              if(((caracter < '0') ||
+                                                 (caracter > '9')) &&
+                                                 (caracter != '\b' /*corresponde a BACK_SPACE*/))
+                                              {
+                                                 e.consume();  // ignorar el evento de teclado
+                                              }
+                                            }
+                                         }
+                                    );
+        varCodigo.getCursor();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -49,6 +70,7 @@ public class ListarDetalleVenta extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         varCodigo = new javax.swing.JTextField();
         botonBuscar = new javax.swing.JButton();
+        botonVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,6 +96,13 @@ public class ListarDetalleVenta extends javax.swing.JFrame {
             }
         });
 
+        botonVolver.setText("Volver");
+        botonVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonVolverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -82,13 +111,17 @@ public class ListarDetalleVenta extends javax.swing.JFrame {
                 .addGap(76, 76, 76)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(119, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(varCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34)
-                        .addComponent(botonBuscar))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(119, Short.MAX_VALUE))
+                        .addComponent(botonBuscar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(botonVolver)
+                        .addGap(27, 27, 27))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,7 +130,8 @@ public class ListarDetalleVenta extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(botonBuscar)
-                    .addComponent(varCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(varCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonVolver))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
@@ -108,18 +142,36 @@ public class ListarDetalleVenta extends javax.swing.JFrame {
 
     private void botonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarActionPerformed
         while(table1.getRowCount()>0) table1.removeRow(0);
-        detalles = consulta.ListaDetalle(); 
-        Object[] fila = new Object[4];
-        for (int x=0;x<detalles.size();x++){
-            //Muestra la id de la venta
-            fila[0]=detalles.get(x).getVentaIdVenta();
-            fila[1]=detalles.get(x).getIdProducto();
-            fila[2]=detalles.get(x).getCantidad();
-            fila[3]=detalles.get(x).getPrecio();
-            table1.addRow(fila);
-        }jTable1.updateUI();
-        JOptionPane.showMessageDialog(this, "Lista actualizada");
+        if (!varCodigo.getText().isEmpty()){
+            detalles = consulta.ListaDetalle(Integer.parseInt(varCodigo.getText())); 
+            if(!detalles.isEmpty()){
+                Object[] fila = new Object[4];
+                for (int x=0;x<detalles.size();x++){
+                    //Muestra la id de la venta
+                    fila[0]=detalles.get(x).getVentaIdVenta();
+                    fila[1]=detalles.get(x).getIdProducto();
+                    fila[2]=detalles.get(x).getCantidad();
+                    fila[3]="$"+detalles.get(x).getPrecio();
+                    table1.addRow(fila);
+                }jTable1.updateUI();
+                JOptionPane.showMessageDialog(this, "Busqueda exitosa");
+                varCodigo.setText(null);
+            }else {
+                JOptionPane.showMessageDialog(this, "No se encontraton elementos coincidentes");
+                varCodigo.setText(null);
+                varCodigo.getCursor();
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Ingrese campo para busqueda");
+            varCodigo.getCursor();
+        }
     }//GEN-LAST:event_botonBuscarActionPerformed
+
+    private void botonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVolverActionPerformed
+        JFrame volver = new Menu();
+        volver.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_botonVolverActionPerformed
 
     /**
      * @param args the command line arguments
@@ -159,6 +211,7 @@ public class ListarDetalleVenta extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonBuscar;
+    private javax.swing.JButton botonVolver;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
