@@ -5,6 +5,11 @@
  */
 package vista;
 
+import controlador.Registro;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author LEARNING CENTER
@@ -14,6 +19,7 @@ public class Agregar extends javax.swing.JFrame {
     /**
      * Creates new form Agregar
      */
+    Registro registro = new Registro();
     
     private void limpiar(){
         txtcodigo.setText("");
@@ -22,11 +28,37 @@ public class Agregar extends javax.swing.JFrame {
         cbxtipoventa.setSelectedIndex(0);
     } 
     
+    private void prepago(){
+        jclterminocontrato.setEnabled(false);
+        jclterminoopcional.setEnabled(false);
+        txtvalorventa.setEnabled(false);
+        cbxproducto.setEnabled(false);
+    }
+    
+    private void postpago(){
+        jclterminocontrato.setEnabled(true);
+        jclterminoopcional.setEnabled(true);
+        txtvalorventa.setEnabled(true);
+        cbxproducto.setEnabled(true);
+    }
+    
+    private void llenarProductos(){
+        
+         ResultSet productos = registro.productos();
+            try {
+                while(productos.next()){
+                    cbxproducto.addItem(productos.getString("NOMBRE_PRODUCTO"));
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null,"Error al cargar los productos");
+            }
+    }
     
     public Agregar() {
         initComponents();
         
-        
+        llenarProductos();
+        prepago();
     }
 
     /**
@@ -56,7 +88,7 @@ public class Agregar extends javax.swing.JFrame {
         jclterminocontrato = new com.toedter.calendar.JCalendar();
         jclfechacontratacion = new com.toedter.calendar.JCalendar();
         jLabel8 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbxproducto = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -122,7 +154,11 @@ public class Agregar extends javax.swing.JFrame {
 
         jLabel8.setText("Producto:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxproducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxproductoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -146,7 +182,7 @@ public class Agregar extends javax.swing.JFrame {
                             .addComponent(txtcodigo, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtvalorventa, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtrut, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(cbxproducto, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(57, 57, 57)
@@ -193,7 +229,7 @@ public class Agregar extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbxproducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(13, Short.MAX_VALUE)
@@ -245,12 +281,22 @@ public class Agregar extends javax.swing.JFrame {
 
     private void cbxtipoventaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxtipoventaActionPerformed
         // TODO add your handling code here:
+        if(cbxtipoventa.getSelectedIndex()== 0){
+            prepago();
+        }
+        if(cbxtipoventa.getSelectedIndex()== 1){
+            postpago();
+        }
     }//GEN-LAST:event_cbxtipoventaActionPerformed
 
     private void btnlimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlimpiarActionPerformed
         // TODO add your handling code here:
         limpiar();
     }//GEN-LAST:event_btnlimpiarActionPerformed
+
+    private void cbxproductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxproductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxproductoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -290,9 +336,9 @@ public class Agregar extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnagregar;
     private javax.swing.JButton btnlimpiar;
+    private javax.swing.JComboBox<String> cbxproducto;
     private javax.swing.JComboBox<String> cbxtipoventa;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
