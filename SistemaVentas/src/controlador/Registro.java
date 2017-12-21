@@ -28,9 +28,13 @@ public class Registro {
         consultaListar=new Listar();
         return consultaListar.ListarVentas();
     }
-    public ArrayList<DetalleVenta> ListaDetalle(){
+    public ArrayList<DetalleVenta> ListaDetalle(int codigo){
         consultaListar=new Listar();
-        return consultaListar.ListarDetalleVenta();
+        return consultaListar.ListarDetalleVenta(codigo);
+    }
+    public ArrayList<DetalleVenta> BuscarDetalle(int codigo, int producto){
+        consultaListar=new Listar();
+        return consultaListar.BuscarDetalleVenta(codigo, producto);
     }
     
     public ResultSet productos(){
