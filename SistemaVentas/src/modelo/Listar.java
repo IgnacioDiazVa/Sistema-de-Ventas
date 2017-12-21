@@ -52,11 +52,37 @@ public class Listar {
                 return null;
         }   
     }
-    public ArrayList<DetalleVenta> ListarDetalleVenta(){
+    public ArrayList<DetalleVenta> ListarDetalleVenta(int codigo){
         
         try {
-            String sql="select VENTA_ID_VENTA,PRODUCTO_ID_PRODUCTO,PRECIO,CANTIDAD from relation_2v1";
+            String sql="select VENTA_ID_VENTA,PRODUCTO_ID_PRODUCTO,PRECIO,CANTIDAD from relation_2v1 where VENTA_ID_VENTA=?";
             PreparedStatement preparedStatement =acceso.obtenerInstancia().prepareStatement(sql);
+            preparedStatement.setInt(1,codigo);
+            ResultSet resultSet = preparedStatement.executeQuery(); 
+            detalles = new ArrayList();
+            while (resultSet.next()){
+                detalleVenta = new DetalleVenta();
+                detalleVenta.setVentaIdVenta(resultSet.getInt("VENTA_ID_VENTA"));
+                detalleVenta.setIdProducto(resultSet.getInt("PRODUCTO_ID_PRODUCTO"));
+                detalleVenta.setPrecio(resultSet.getInt("PRECIO"));
+                detalleVenta.setCantidad(resultSet.getInt("CANTIDAD"));
+                detalles.add(detalleVenta);
+            }
+            return detalles;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            System.out.println("se cae en el modelo");                    
+            Logger.getLogger(Listar.class.getName()).log(Level.SEVERE, null, ex);
+                return null;
+        }   
+    }
+    public ArrayList<DetalleVenta> BuscarDetalleVenta(int codigo,int producto){
+        
+        try {
+            String sql="select VENTA_ID_VENTA,PRODUCTO_ID_PRODUCTO,PRECIO,CANTIDAD from relation_2v1 where VENTA_ID_VENTA=? and PRODUCTO_ID_PRODUCTO=?";
+            PreparedStatement preparedStatement =acceso.obtenerInstancia().prepareStatement(sql);
+            preparedStatement.setInt(1,codigo);
+            preparedStatement.setInt(2,producto);
             ResultSet resultSet = preparedStatement.executeQuery(); 
             detalles = new ArrayList();
             while (resultSet.next()){
