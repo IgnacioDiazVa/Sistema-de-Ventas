@@ -8,7 +8,9 @@ package vista;
 import controlador.Registro;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
+import modelo.Venta;
 
 /**
  *
@@ -279,6 +281,31 @@ public class Agregar extends javax.swing.JFrame {
 
     private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
         // TODO add your handling code here:
+        
+        String rut = txtrut.getText();
+        Integer codigoVenta = Integer.parseInt(txtcodigo.getText());
+        Integer valorVenta = 0;
+        if(txtvalorventa.getText().length()>0){
+            valorVenta = Integer.parseInt(txtvalorventa.getText());
+        }
+        Integer tipoVenta = 0;
+        
+        if(cbxtipoventa.getSelectedIndex()== 0){
+            tipoVenta = 2000;
+        }
+        if(cbxtipoventa.getSelectedIndex()== 1){
+            tipoVenta = 1000;
+        }
+        SimpleDateFormat auxiliar = new SimpleDateFormat("dd/MM/yyyy"); 
+        
+        String fechaContratacion = auxiliar.format(jclfechacontratacion.getDate());
+        String fechaTerminoContrato = auxiliar.format(jclterminocontrato.getDate());
+        String fechaOpcional = auxiliar.format(jclterminoopcional.getDate());
+        
+        Venta nuevo = new Venta(codigoVenta, tipoVenta, valorVenta, rut, fechaContratacion, fechaOpcional, fechaTerminoContrato);
+        registro.agregar(nuevo);
+        System.out.println(nuevo.toString());
+        
     }//GEN-LAST:event_btnagregarActionPerformed
 
     private void cbxtipoventaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxtipoventaActionPerformed

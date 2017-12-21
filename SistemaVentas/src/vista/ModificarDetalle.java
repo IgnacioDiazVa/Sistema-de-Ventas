@@ -18,6 +18,7 @@ import modelo.DetalleVenta;
 public class ModificarDetalle extends javax.swing.JFrame {
     ArrayList<DetalleVenta> detalles;
     Registro consulta;
+    Integer codProd;
     /**
      * Creates new form Modificar
      */
@@ -44,7 +45,7 @@ public class ModificarDetalle extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         varCantidad = new javax.swing.JTextField();
         varPrecio = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        botonModificar = new javax.swing.JButton();
         botonVolver = new javax.swing.JButton();
         varCodigo1 = new javax.swing.JTextField();
         varCantidad1 = new javax.swing.JTextField();
@@ -63,7 +64,12 @@ public class ModificarDetalle extends javax.swing.JFrame {
 
         jLabel3.setText("Id Venta");
 
-        jButton1.setText("Modificar");
+        botonModificar.setText("Modificar");
+        botonModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonModificarActionPerformed(evt);
+            }
+        });
 
         botonVolver.setText("Volver");
         botonVolver.addActionListener(new java.awt.event.ActionListener() {
@@ -92,7 +98,7 @@ public class ModificarDetalle extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
+                    .addComponent(botonModificar)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -162,7 +168,7 @@ public class ModificarDetalle extends javax.swing.JFrame {
                         .addComponent(varPrecio1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(botonModificar)
                     .addComponent(botonVolver))
                 .addGap(42, 42, 42))
         );
@@ -177,10 +183,12 @@ public class ModificarDetalle extends javax.swing.JFrame {
     }//GEN-LAST:event_botonVolverActionPerformed
 
     private void botonProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonProductoActionPerformed
+        consulta = new Registro();
         if (!varProducto.getText().isEmpty()){
+            detalles = new ArrayList();
             detalles = consulta.BuscarDetalle(Integer.parseInt(varCodigo1.getText()),Integer.parseInt(varProducto.getText()));
-            
             for (int x=0;x<detalles.size();x++){
+            codProd= Integer.parseInt(varProducto.getText());
             varCantidad1.setText(detalles.get(x).getCantidad()+"");
             varCantidad1.setEnabled(false);
             varPrecio1.setText(detalles.get(x).getPrecio()+"");
@@ -191,6 +199,27 @@ public class ModificarDetalle extends javax.swing.JFrame {
             varProducto.getCursor();
         }
     }//GEN-LAST:event_botonProductoActionPerformed
+
+    private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
+        if (!"".equals(varCantidad.getText()) || !"".equals(varPrecio.getText())){
+            consulta = new Registro();
+            int precio=0,cantidad=0,codigo;
+            codigo= new Integer (varCodigo1.getText());
+            if (!varPrecio.getText().isEmpty()){
+            precio=new Integer (varPrecio.getText());
+            }if (!varCantidad.getText().isEmpty()){
+            cantidad=new Integer(varCantidad.getText());
+            }
+            if (consulta.ModificarDetalle(codigo, codProd, cantidad, precio)){
+            JOptionPane.showMessageDialog(this, "Detalle Modificado");
+            }else {
+            JOptionPane.showMessageDialog(this, "No ingresado");
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se modifico ningun campo");
+        }
+    }//GEN-LAST:event_botonModificarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -231,9 +260,9 @@ public class ModificarDetalle extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonModificar;
     private javax.swing.JButton botonProducto;
     private javax.swing.JButton botonVolver;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
