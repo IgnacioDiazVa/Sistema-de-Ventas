@@ -83,6 +83,7 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         Listar listar = new Listar();
         listar.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -94,6 +95,7 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         Agregar agregar = new Agregar();
         agregar.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
